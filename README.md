@@ -79,6 +79,20 @@ Adotamos uma versão simplificada do **Git Flow** para manter a estabilidade do 
 ### 📐 Modelagem e Documentação (UML)
 A arquitetura do sistema é validada antes da codificação através de diagramas **UML**:
 - **Diagrama de Classes:** Para estruturar o herança e polimorfismo dos desafios.
+
+<table>
+  <thead>
+    <tr>
+      <th>Diagrama de Classes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img width="1740" height="958" alt="20260414104453" src="https://github.com/user-attachments/assets/fa4e0fc7-2069-4942-bb99-e03af293a532"/></td>
+    </tr>
+  </tbody>
+</table>
+
 - **Diagrama de Casos de Uso:** Para mapear as interações entre o Estudante/Administrador e o sistema.
 - **DER (Diagrama Entidade-Relacionamento):** Para modelagem das tabelas e chaves estrangeiras no MySQL.
 
