@@ -1,17 +1,30 @@
 package com.linguados;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+import java.util.Scanner;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        boolean rodando = true;
+
+        System.out.println("\n--- BEM VINDO AO LINGUADOS CLI ---");
+
+        while (rodando) {
+            System.out.println("\n[1] Testar Conexão Banco");
+            System.out.println("[0] Sair");
+            System.out.print("Escolha uma opção: ");
+
+            String opcao = scanner.nextLine();
+
+            if (opcao.equals("0")) {
+                rodando = false;
+                System.out.println("Tchau! 🦆");
+            } else if (opcao.equals("1")) {
+                System.out.println("✅ O banco continua conectado!");
+            } else {
+                System.out.println("❌ Opção inválida!");
+            }
         }
     }
 }
