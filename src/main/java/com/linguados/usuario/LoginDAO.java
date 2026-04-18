@@ -9,7 +9,7 @@ public class LoginDAO {
 
     public void cadastrar(Usuario usuario) {
 
-        String sql = "INSERT INTO usuario (username, senha) VALUES (?, ?)";
+        String sql = "INSERT INTO usuarios (username, senha) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -27,7 +27,7 @@ public class LoginDAO {
     
 	public boolean login(String username, String senha) {
 	
-	    String sql = "SELECT * FROM usuario WHERE username=? AND senha=?";
+	    String sql = "SELECT * FROM usuarios WHERE username=? AND senha=?";
 	
 	    try (Connection conn = DatabaseConfig.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(sql)) {
