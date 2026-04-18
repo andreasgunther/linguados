@@ -4,7 +4,7 @@ CREATE DATABASE IF NOT EXISTS linguados;
 USE linguados;
 
 -- 1. Tabela de Usuários
-CREATE TABLE IF NOT EXISTS usuarios (
+CREATE TABLE IF NOT EXISTS usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(50) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS desafio (
     titulo VARCHAR(150) NOT NULL,
     descricao TEXT,
     pontos_xp INT NOT NULL,
-    dificuldade ENUM('Fácil', 'Médio', 'Difícil') DEFAULT 'Fácil'
+    dificuldade ENUM('Facil', 'Medio', 'Dificil') DEFAULT 'Facil'
     );
 
 -- 3. Tabela de Progresso (Relaciona Usuário com Desafio)
@@ -46,8 +46,13 @@ CREATE TABLE IF NOT EXISTS conquista (
     FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
     );
 
--- Povoamento: Insere alguns desafios iniciais para teste
+-- Povoamento:
+-- Insere alguns registros iniciais para teste
+INSERT IGNORE INTO usuario (username, senha) VALUES
+('admin', 'admin123');
+
 INSERT IGNORE INTO desafio (titulo, descricao, pontos_xp, dificuldade) VALUES
-('Olá Mundo', 'Imprima sua primeira mensagem no console Java.', 10, 'Fácil'),
-('Variáveis e Tipos', 'Declare variáveis de diferentes tipos primitivos.', 20, 'Fácil'),
-('Estruturas de Repetição', 'Crie um loop que conte até 100.', 50, 'Médio');
+('Ola Mundo', 'Imprima sua primeira mensagem no console Java.', 10, 'Facil'),
+('Variaveis e Tipos', 'Declare variaveis de diferentes tipos primitivos.', 20, 'Facil'),
+('Estruturas de Repeticao', 'Crie um loop que conte ate 100.', 50, 'Medio');
+
