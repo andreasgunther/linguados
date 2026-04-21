@@ -1,9 +1,11 @@
 package com.linguados.usuario;
 
 import com.linguados.config.DatabaseConfig;
-
+import com.linguados.progresso.ProgressoDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class LoginDAO {
 
@@ -18,7 +20,17 @@ public class LoginDAO {
             stmt.setString(2, usuario.getSenha());
 
             stmt.execute();
-            System.out.println("Usuário cadastrado!");
+
+			// Aqui pegamos o ID que o MySQL acabou de criar
+			ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				int idGerado = rs.getInt(1);
+
+				// Agora chamamos o SEU método para criar o registro de XP 0
+				ProgressoDAO progressoDAO = new ProgressoDAO();
+				progressoDAO.criarProgressoInicial(idGerado);
+				System.out.println("Usuário cadastrado!");
+			}
 
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
