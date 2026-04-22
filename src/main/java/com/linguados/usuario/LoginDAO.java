@@ -5,7 +5,7 @@ import com.linguados.progresso.ProgressoDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class LoginDAO {
 
@@ -37,7 +37,7 @@ public class LoginDAO {
         }
     }
     
-	public boolean login(String username, String senha) {
+	public Usuario login(String username, String senha) {
 	
 	    String sql = "SELECT * FROM usuario WHERE username=? AND senha=?";
 	
@@ -46,14 +46,17 @@ public class LoginDAO {
 	
 	        stmt.setString(1, username);
 	        stmt.setString(2, senha);
-	
-	        var rs = stmt.executeQuery();
-	
-	        return rs.next();
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				// Retorna o usuário com o ID vindo do banco
+				return new Usuario(rs.getInt("id"), rs.getString("username"), rs.getString("senha"));
+			}
 	
 	    } catch (Exception e) {
 	        System.out.println("Erro login: " + e.getMessage());
-	        return false;
 	    }
+		return null;
 	}
 }

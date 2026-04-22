@@ -25,7 +25,7 @@ public class LoginController {
         dao.cadastrar(u);
     }
 
-    public boolean login(String user, String senha) {
+    public Usuario login(String user, String senha) {
         return dao.login(user, senha);
     }
 }

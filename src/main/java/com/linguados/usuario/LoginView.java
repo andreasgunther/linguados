@@ -50,13 +50,16 @@ public class LoginView {
                     
                     System.out.print("\nDigite sua Senha: ");
                     String senhaL = sc.next();
-                	
-                    if (controller.login(userL, senhaL)) {
-                    	System.out.println("Entrou Papito");
-                	} else {
-                		System.out.println("Deu Ruim!");
-                	}
-                    
+
+                    Usuario logado = controller.login(userL, senhaL);
+
+                    if (logado != null) {
+                        com.linguados.config.Sessao.setUsuarioLogado(logado);
+                        System.out.println("Entrou Papito");
+                        x = 0; // Vai para o jogo
+                    } else {
+                        System.out.println("Deu Ruim!");
+                    }
                     break;
                     
                 case 0:
