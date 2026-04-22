@@ -24,8 +24,20 @@ public class DesafioController {
             } else if (idEscolhido > 0) {
                 Desafio detalhe = desafioDAO.buscarPorId(idEscolhido);
                 desafioView.mostrarDetalhesDesafio(detalhe);
-                desafioView.mostrarMensagem("\nPressione ENTER para voltar à lista...");
-                new java.util.Scanner(System.in).nextLine();
+
+                // --- SEU NOVO EXEMPLO DE CONCLUSÃO ---
+                System.out.println("\n[S] Resolver Desafio | [N] Voltar");
+                String acao = new java.util.Scanner(System.in).nextLine();
+
+                if (acao.equalsIgnoreCase("S")) {
+                    System.out.println("Simulando resolução... Concluiu com sucesso!");
+
+                    // Instancia o seu controller e entrega o XP!
+                    com.linguados.progresso.ProgressoController progressoCtrl = new com.linguados.progresso.ProgressoController();
+                    progressoCtrl.concluirDesafio(detalhe);
+                }
+                // ---------------------------------------
+
             } else {
                 desafioView.mostrarMensagem("Opção inválida! Tente novamente.");
             }

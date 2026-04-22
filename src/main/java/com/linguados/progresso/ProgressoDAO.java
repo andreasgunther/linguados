@@ -1,69 +1,94 @@
 package com.linguados.progresso;
 
 import com.linguados.config.DatabaseConfig;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.linguados.usuario.Usuario;
 
-    public class ProgressoDAO {
+import java.sql.*;
 
-        // 1. Cria os dados de progresso do novo Usuario
-        public void criarProgressoInicial(int idUsuario) {
-            String sql = "INSERT INTO progresso (id_usuario, xp_atual, nivel_atual) VALUES (?, 0, 1)";
+public class ProgressoDAO {
 
-            try (Connection conn = DatabaseConfig.getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+    // 1. Criar progresso inicial (nível 1, XP 0 já deve estar no usuário)
+    public void criarProgressoInicial(int idUsuario) {
 
-                stmt.setInt(1, idUsuario);
-                stmt.executeUpdate();
-                System.out.println("Status: Progresso inicial do usuário " + idUsuario + " criado com sucesso.");
+        String sql = "INSERT INTO progresso (usuario_id, desafio_id) VALUES (?, NULL)";
 
-            } catch (SQLException e) {
-                System.err.println("Erro ao criar progresso inicial: " + e.getMessage());
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idUsuario);
+            stmt.executeUpdate();
+
+            System.out.println("Progresso inicial criado!");
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao criar progresso inicial: " + e.getMessage());
+        }
+    }
+
+    // 2. Buscar progresso (XP e nível)
+    public Progresso buscarPorUsuario(int idUsuario) {
+
+        String sql = "SELECT xp, nivel FROM usuario WHERE id = ?";
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Progresso(
+                        idUsuario,
+                        rs.getInt("xp"),
+                        rs.getInt("nivel")
+                );
             }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar progresso: " + e.getMessage());
         }
 
-        // 2. Buscar progresso pelo ID do usuário
-        public Progresso buscarPorUsuario(int idUsuario) {
-            String sql = "SELECT * FROM progresso WHERE id_usuario = ?";
+        return null;
+    }
 
-            try (Connection conn = DatabaseConfig.getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+    // 3. Atualizar progresso (VERSÃO PADRÃO)
+    public void atualizarProgresso(Usuario usuario) {
 
-                stmt.setInt(1, idUsuario);
-                ResultSet rs = stmt.executeQuery();
+        String sql = "UPDATE usuario SET xp = ?, nivel = ? WHERE id = ?";
 
-                if (rs.next()) {
-                    return new Progresso(
-                            rs.getInt("id_usuario"),
-                            rs.getInt("xp_atual"),
-                            rs.getInt("nivel_atual")
-                    );
-                }
-            } catch (SQLException e) {
-                System.err.println("Erro ao buscar progresso: " + e.getMessage());
-            }
-            return null;
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, usuario.getXp());
+            stmt.setInt(2, usuario.getNivel());
+            stmt.setInt(3, usuario.getId());
+
+            stmt.executeUpdate();
+
+            System.out.println("💾 Progresso atualizado!");
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar progresso: " + e.getMessage());
         }
+    }
 
-        // 3. Atualizar o XP e Nível (chamado quando o usuário ganha pontos)
-        public void atualizarProgresso(Progresso progresso) {
-            String sql = "UPDATE progresso SET xp_atual = ?, nivel_atual = ? WHERE id_usuario = ?";
+    // 4. Registrar histórico de desafios
+    public void registrarConclusao(int idUsuario, int idDesafio) {
 
-            try (Connection conn = DatabaseConfig.getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String sql = "INSERT INTO progresso (usuario_id, desafio_id) VALUES (?, ?)";
 
-                stmt.setInt(1, progresso.getXpAtual());
-                stmt.setInt(2, progresso.getNivelAtual());
-                stmt.setInt(3, progresso.getIdUsuario());
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-                stmt.executeUpdate();
-                System.out.println("Progresso salvo no banco!");
+            stmt.setInt(1, idUsuario);
+            stmt.setInt(2, idDesafio);
 
-            } catch (SQLException e) {
-                System.err.println("Erro ao salvar progresso: " + e.getMessage());
-            }
+            stmt.executeUpdate();
+
+            System.out.println("LOG: Desafio registrado no histórico!");
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao registrar histórico: " + e.getMessage());
         }
     }
 }

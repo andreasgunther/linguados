@@ -13,13 +13,13 @@ public class LoginDAO {
 
         String sql = "INSERT INTO usuario (username, senha) VALUES (?, ?)";
 
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+		try (Connection conn = DatabaseConfig.getConnection();
+			 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { // <--- AVISO ADICIONADO!
 
-            stmt.setString(1, usuario.getUsername());
-            stmt.setString(2, usuario.getSenha());
+			stmt.setString(1, usuario.getUsername());
+			stmt.setString(2, usuario.getSenha());
 
-            stmt.execute();
+			stmt.executeUpdate();
 
 			// Aqui pegamos o ID que o MySQL acabou de criar
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -36,27 +36,33 @@ public class LoginDAO {
             System.out.println("Erro: " + e.getMessage());
         }
     }
-    
+
 	public Usuario login(String username, String senha) {
-	
-	    String sql = "SELECT * FROM usuario WHERE username=? AND senha=?";
-	
-	    try (Connection conn = DatabaseConfig.getConnection();
-	         PreparedStatement stmt = conn.prepareStatement(sql)) {
-	
-	        stmt.setString(1, username);
-	        stmt.setString(2, senha);
+		String sql = "SELECT * FROM usuario WHERE username=? AND senha=?";
+
+		try (Connection conn = DatabaseConfig.getConnection();
+			 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+			stmt.setString(1, username);
+			stmt.setString(2, senha);
 
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				// Retorna o usuário com o ID vindo do banco
-				return new Usuario(rs.getInt("id"), rs.getString("username"), rs.getString("senha"));
+				// 1. Primeiro cria o objeto
+				Usuario user = new Usuario(rs.getInt("id"), rs.getString("username"), rs.getString("senha"));
+
+				// 2. Depois preenche os dados que vêm do banco (Docker)
+				user.setXp(rs.getInt("xp"));
+				user.setNivel(rs.getInt("nivel"));
+
+				// 3. Só agora retorna o usuário completo
+				return user;
 			}
-	
-	    } catch (Exception e) {
-	        System.out.println("Erro login: " + e.getMessage());
-	    }
+
+		} catch (Exception e) {
+			System.out.println("Erro login: " + e.getMessage());
+		}
 		return null;
 	}
 }

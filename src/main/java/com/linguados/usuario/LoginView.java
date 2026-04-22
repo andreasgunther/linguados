@@ -1,6 +1,7 @@
 package com.linguados.usuario;
 
 import java.util.Scanner;
+import com.linguados.menu.MenuController;
 
 public class LoginView {
     public void inicializar() {
@@ -38,7 +39,7 @@ public class LoginView {
                     	break;
                     }
                     
-                    break;
+                break;
                 
                 case 2:
                 	System.out.println("=======================");
@@ -51,23 +52,28 @@ public class LoginView {
                     System.out.print("\nDigite sua Senha: ");
                     String senhaL = sc.next();
 
-                    Usuario logado = controller.login(userL, senhaL);
+                    Usuario userLogado = controller.login(userL, senhaL);
 
-                    if (logado != null) {
-                        com.linguados.config.Sessao.setUsuarioLogado(logado);
-                        System.out.println("Entrou Papito");
-                        x = 0; // Vai para o jogo
+                    if (userLogado != null) {
+                        // 1. Guarda o usuário na sessão para o ProgressoController usar depois
+                        com.linguados.config.Sessao.setUsuarioLogado(userLogado);
+
+                        System.out.println("\n✅ Login realizado com sucesso! Bem-vindo, " + userLogado.getUsername() + "!");
+
+                        // 2. CHAMA O MENU PRINCIPAL (A Integração acontece aqui!)
+                        new com.linguados.menu.MenuController().exibirMenuPrincipal();
                     } else {
-                        System.out.println("Deu Ruim!");
+                        System.out.println("❌ Usuário ou senha incorretos.");
                     }
-                    break;
+                break;
                     
                 case 0:
                     x = 0;
-                    break;
-                    
+                break;
+
                 default:
-                    break;
+                    System.out.println("Valor Invalido");
+                break;
             }
         }
     }

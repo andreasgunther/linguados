@@ -27,6 +27,9 @@ public class Progresso {
     public int getNivelAtual() {
         return nivelAtual;
     }
+    public int getIdUsuario() {
+        return idUsuario;
+    }
 
     public void setXpAtual(int xpAtual) {
         this.xpAtual = xpAtual;
@@ -34,4 +37,5 @@ public class Progresso {
     public void setNivelAtual(int nivelAtual) {
         this.nivelAtual = nivelAtual;
     }
+
 }
