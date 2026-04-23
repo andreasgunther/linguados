@@ -1,35 +1,34 @@
 services:
-  # Banco de Dados MySQL
-  linguados-db:
+  # Serviço do Banco de Dados
+  db:
     image: mysql:8.0
     container_name: linguados-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: linguados
+      MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
+      - mysql_data:/var/lib/mysql
       - ./initdb:/docker-entrypoint-initdb.d
-    networks:
-      - linguados-net
 
-  # Aplicação Web (Tomcat)
-  linguados-app:
+  # Serviço da Aplicação Java
+  app:
     build: .
     container_name: linguados-app
-    restart: always
-    ports:
-      - "8080:8080"  # Agora mapeamos a porta do Tomcat
     depends_on:
-      - linguados-db
+      - db
+    volumes:
+      - mysql_data:/var/lib/mysql
     environment:
-      DB_URL: jdbc:mysql://linguados-db:3306/linguados?useSSL=false&allowPublicKeyRetrieval=true
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: linguados
       DB_USER: root
       DB_PASSWORD: root
-    networks:
-      - linguados-net
+    stdin_open: true
+    tty: true
 
-networks:
-  linguados-net:
-    driver: bridge
+volumes:
+  mysql_data:
