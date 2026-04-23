@@ -7,8 +7,5 @@ public class Main {
     public static void main(String[] args) {
         LoginView ls = new LoginView();
         ls.inicializar();
-
-        DesafioController controller = new DesafioController();
-        controller.iniciarModulo();
     }
 }

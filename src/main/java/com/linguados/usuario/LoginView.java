@@ -1,6 +1,7 @@
 package com.linguados.usuario;
 
 import java.util.Scanner;
+import com.linguados.menu.MenuController;
 
 public class LoginView {
     public void inicializar() {
@@ -38,7 +39,7 @@ public class LoginView {
                     	break;
                     }
                     
-                    break;
+                break;
                 
                 case 2:
                 	System.out.println("=======================");
@@ -50,21 +51,29 @@ public class LoginView {
                     
                     System.out.print("\nDigite sua Senha: ");
                     String senhaL = sc.next();
-                	
-                    if (controller.login(userL, senhaL)) {
-                    	System.out.println("Entrou Papito");
-                	} else {
-                		System.out.println("Deu Ruim!");
-                	}
-                    
-                    break;
+
+                    Usuario userLogado = controller.login(userL, senhaL);
+
+                    if (userLogado != null) {
+                        // 1. Guarda o usuário na sessão para o ProgressoController usar depois
+                        com.linguados.config.Sessao.setUsuarioLogado(userLogado);
+
+                        System.out.println("\n✅ Login realizado com sucesso! Bem-vindo, " + userLogado.getUsername() + "!");
+
+                        // 2. CHAMA O MENU PRINCIPAL (A Integração acontece aqui!)
+                        new com.linguados.menu.MenuController().exibirMenuPrincipal();
+                    } else {
+                        System.out.println("❌ Usuário ou senha incorretos.");
+                    }
+                break;
                     
                 case 0:
                     x = 0;
-                    break;
-                    
+                break;
+
                 default:
-                    break;
+                    System.out.println("Valor Invalido");
+                break;
             }
         }
     }
