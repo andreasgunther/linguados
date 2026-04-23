@@ -5,22 +5,15 @@
 ![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-O **Linguados** é uma aplicação focada no ensino de inglês técnico para profissionais de TI. Através de desafios de tradução, interpretação de código e preenchimento de lacunas, o desenvolvedor pratica o idioma enquanto reforça conceitos de programação.
+O **Linguados** é uma aplicação focada no ensino de inglês técnico para profissionais de TI. Através de desafios de tradução, interpretação de código e preenchimento de lacunas, o desenvolvedor pratica o idioma enquanto reforça conceitos de programação. A aplicação é CLI (Command Line Interface), executada via terminal.
 
 ---
-
-## Funcionalidades (MVP)
-
-- **Sistema de Login:** Cadastro e autenticação de estudantes.
-- **Trilhas de Estudo:** Módulos categorizados por nível e tema (ex: Sintaxe, DevOps, SQL).
-- **Gamificação:** Acúmulo de XP, contador de ofensiva (streaks) e ranking.
-- **Motor de Desafios:** Validação polimórfica de respostas em tempo real.
 
 ## 🛠 Arquitetura e Tecnologias
 
 O projeto utiliza uma estrutura modular baseada em **Package by Feature**, facilitando a manutenção e escalabilidade.
 
-- **Linguagem:** Java 25 (LTS)
+- **Linguagem:** Java 17
 - **Gestão de Dependências:** Maven
 - **Banco de Dados:** MySQL 8.0
 - **Infraestrutura:** Docker & Docker Compose
@@ -35,7 +28,7 @@ O projeto utiliza uma estrutura modular baseada em **Package by Feature**, facil
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/andreasgunther/linguados
+   git clone https://github.com/linguados-app/linguados-cli
    cd linguados
    ```
 
@@ -46,17 +39,16 @@ O projeto utiliza uma estrutura modular baseada em **Package by Feature**, facil
     
 3. Execute a aplicação:
     ```bash
-    docker exec -it linguados-app java -jar target/linguados-1.0.0-SNAPSHOT.jar
+    docker exec -it linguados-app java -jar app.jar
     ```
 
 ## 📂 Estrutura de Pastas
 
     src/main/java/com/linguados/
     ├── Main.java           # Ponto de entrada (Bootstrap)
-    ├── auth/               # Módulo de Autenticação e Login
+    ├── progresso/          # Módulo de Registro de Progresso
     ├── desafio/            # Core pedagógico e motor de exercícios
-    ├── usuario/            # Gestão de perfis e dados do estudante
-    └── gamificacao/        # Lógica de XP, Ofensivas (Streaks) e Ranking
+    └── usuario/            # Gestão de perfis e dados do estudante
 
 ## Metodologia de Desenvolvimento
 
